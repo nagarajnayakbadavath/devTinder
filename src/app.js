@@ -7,14 +7,20 @@ app.listen(3000,()=>{
     console.log("Server is successfully listening on port 3000");
 });
 
-app.use("/test",(req,res)=>{
-    res.send("Test From the Server");
+app.get("/user",(req,res)=>{
+    res.send(
+        {
+            firstName:"Badavath",
+            lastName:"Nagaraju"
+        }
+    );
 });
 
-app.use("/hello",(req,res)=>{
-    res.send("Hello Hello!");
+app.post("/user",(req,res)=>{
+    //saving the data in to db logic
+    res.send("Data Saved Successfully");
 });
 
-app.use("/helloWorld",(req,res)=>{
-    res.send("Hello Hello Hello!");
+app.delete("/user",(req,res)=>{
+    res.send("Data is deleted successfully");
 });
