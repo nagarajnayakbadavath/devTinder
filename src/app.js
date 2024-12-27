@@ -1,29 +1,29 @@
 const express=require('express');
-
 const app=express();
+const connectdb=require("./config/database");
+const User=require("./models/user");
 
-app.listen(3000,()=>{
-    console.log("Server is successfully listening on port 3000");
+app.use(express.json());
+
+app.post("/signup", async (req, res) => {
+    // console.log(req.body);
+    const user=new User(req.body);
+    try{
+        await user.save();
+        res.send("User added successfully");
+    } catch (err) {
+        console.error("Error creating user:", err);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
-const {adminAuth,userAuth} =require("./middlewares/auth");
-
-app.use("/admin",adminAuth);
-
-app.get("/admin/getAllData",(req,res,next)=>{
-        res.send("All Data Send");
-});
-
-app.get("/user/getData",userAuth,(req,res,next)=>{
-    res.send("Got Data");
-});
-
-app.get("/admin/deleteUser",(req,res,next)=>{
-    res.send("Dleted the User");
-});
-
-app.get("/admin/deleteUser2",(req,res,next)=>{
-    res.send("Dleted the User2");
+connectdb().then(()=>{
+    console.log("Database connection success");
+    app.listen(3000,()=>{
+        console.log("Server is successfully listening on port 3000");
+    });
+}).catch(err=>{
+    console.error("Database is not connected");
 });
 
 
