@@ -2,25 +2,29 @@ const express=require('express');
 
 const app=express();
 
-
 app.listen(3000,()=>{
     console.log("Server is successfully listening on port 3000");
 });
 
-app.get("/user",(req,res)=>{
-    res.send(
-        {
-            firstName:"Badavath",
-            lastName:"Nagaraju"
-        }
-    );
+const {adminAuth,userAuth} =require("./middlewares/auth");
+
+app.use("/admin",adminAuth);
+
+app.get("/admin/getAllData",(req,res,next)=>{
+        res.send("All Data Send");
 });
 
-app.post("/user",(req,res)=>{
-    //saving the data in to db logic
-    res.send("Data Saved Successfully");
+app.get("/user/getData",userAuth,(req,res,next)=>{
+    res.send("Got Data");
 });
 
-app.delete("/user",(req,res)=>{
-    res.send("Data is deleted successfully");
+app.get("/admin/deleteUser",(req,res,next)=>{
+    res.send("Dleted the User");
 });
+
+app.get("/admin/deleteUser2",(req,res,next)=>{
+    res.send("Dleted the User2");
+});
+
+
+
